@@ -4,7 +4,7 @@ import {z} from 'zod'
 const formSchema = z.object({
     email:z.string(),
     username:z.string(),
-    password:z.string().min(5,"Wrong password")
+    password:z.string().refine(pre => pre === "12345","Wrong password")
 })
 export const onSubmit = async (prev:any, formData:FormData) => {
     const form = {
@@ -13,6 +13,7 @@ export const onSubmit = async (prev:any, formData:FormData) => {
         password:formData.get("password") as string
     }
     const result = formSchema.safeParse(form)
+
     if(!result.success){
         return {
             fieldErrors:result.error.flatten().fieldErrors,
@@ -20,9 +21,9 @@ export const onSubmit = async (prev:any, formData:FormData) => {
             success:false
         }
     }else{
-        console.log(result.data)
+
         return {
-            form: { email: '', username: '', password: '' },
+            form: { email: "", username: "", password: "" },
             fieldErrors: {},
             success:true
         }
