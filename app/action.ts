@@ -8,21 +8,21 @@ const formSchema = z.object({
 })
 export const onSubmit = async (prev:any, formData:FormData) => {
     const form = {
-        email:formData.get("email"),
-        username:formData.get("username"),
-        password:formData.get("password")
+        email:formData.get("email") as string,
+        username:formData.get("username") as string,
+        password:formData.get("password") as string
     }
     const result = formSchema.safeParse(form)
     if(!result.success){
         return {
             fieldErrors:result.error.flatten().fieldErrors,
-            formData:form,
+            form,
             success:false
         }
     }else{
         console.log(result.data)
         return {
-            formData: {},
+            form: { email: '', username: '', password: '' },
             fieldErrors: {},
             success:true
         }
