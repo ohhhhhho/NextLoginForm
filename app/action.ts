@@ -2,9 +2,9 @@
 import {z} from 'zod'
 
 const formSchema = z.object({
-    email:z.string(),
-    username:z.string(),
-    password:z.string().refine(pre => pre === "12345","Wrong password")
+    email:z.string().refine(email => email.includes('@zod.com'),'Only zod email'),
+    username:z.string().min(5),
+    password:z.string().min(10,'Password should be at least 10 characters long').refine(pre => /\d/.test(pre),'Password should contain at least one number')
 })
 export const onSubmit = async (prev:any, formData:FormData) => {
     const form = {
@@ -21,7 +21,6 @@ export const onSubmit = async (prev:any, formData:FormData) => {
             success:false
         }
     }else{
-
         return {
             form: { email: "", username: "", password: "" },
             fieldErrors: {},

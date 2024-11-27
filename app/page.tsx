@@ -15,8 +15,8 @@ export default function Home() {
     <div className="w-full h-screen bg-white">
       <div className="flex justify-center items-center flex-col">
         <form action={action} className="flex flex-col *:mt-4">
-          <Input name="email" type="email" placeholder="Email" required defaultValue={state?.form?.email}/>
-          <Input name="username" type="text" placeholder="Username" required defaultValue={state?.form?.username}/>
+          <Input name="email" type="email" placeholder="Email" required defaultValue={state?.form?.email} errors={state.fieldErrors.email}/>
+          <Input name="username" type="text" placeholder="Username" required defaultValue={state?.form?.username} errors={state?.fieldErrors.username}/>
           <Input name="password" type="password" placeholder="Password" required min={5} errors={state?.fieldErrors.password}/>
           <Button text="Log in"/>
         </form>
