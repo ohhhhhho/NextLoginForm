@@ -12,6 +12,7 @@ export default function Input({name,errors,defaultValue,...extraProps}:IInput & 
         if (name === "email") return <EnvelopeIcon />
         if (name === "username") return <UserIcon />
         if (name === "password") return <KeyIcon />
+        if (name === "password_confirm") return <KeyIcon />
       }
     return(
         <>
