@@ -8,7 +8,7 @@ interface Routes{
 const publicOnlyUrls:Routes = {
     '/':true,
     '/login':true,
-    '/create-account':true
+    '/create-account':true,
 }
 export async function middleware(request:NextRequest){
     const session = await getSession()

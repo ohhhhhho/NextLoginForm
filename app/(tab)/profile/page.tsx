@@ -27,10 +27,12 @@ export default async function Profile(){
     }
     return(
         <>
-            <h2>Hello! {user.username}</h2>
-            <form action={logOut}>
-                <button>LogOut</button>
+            <div className="relative h-screen">
+            <form action={logOut} className="absolute top-10 right-10 group">
+                <button className="hover:underline hover:underline-offset-2">LogOut</button>
             </form>
+            <h2 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">Hello! {user.username}</h2>
+            </div>
         </>
     )
 }
