@@ -5,7 +5,7 @@ export async function getMoreTweet(page:number) {
     const tweet = await db.tweet.findMany({
         select:{
             id:true,
-            tweet:true,
+            title:true,
             created_at:true,
             Like:true
         },

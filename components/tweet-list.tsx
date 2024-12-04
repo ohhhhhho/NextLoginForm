@@ -5,7 +5,7 @@ import { getMoreTweet } from "@/app/(tab)/tweetList/action";
 
 interface TweetListProps {
     initialTweet:{ 
-        tweet: string;
+        title: string;
         id: number;
         created_at: Date;
     }[]

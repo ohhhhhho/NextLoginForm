@@ -1,6 +1,7 @@
 import db from "@/lib/db"
 import getSession from "@/lib/session"
 import { formatToTimeAgo } from "@/lib/utills"
+import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
 
 const getUser = async (userId:number) => {
@@ -60,7 +61,11 @@ export default async function TweetDetail({params}:{params:{id:string}}){
                     </button>
                     </form>
                 ) : null}
-                <span className="mt-4 block">{tweet.tweet}</span>
+                <span className="mt-4 block">제목 : {tweet.title}</span>
+                <div className="relative w-full h-96">
+                    <Image fill className="object-cover" src={tweet.photo} alt={tweet.title}/>
+                </div>
+                <span>{tweet.description}</span>
             </div>
         </>
     )
