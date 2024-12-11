@@ -21,7 +21,18 @@ const formSchema = z.object({
     email:z.string().refine(email => email.includes('@zod.com'),'Only zod email').refine(checkUniqueEmail,'An account with this email does not exists'),
     password:z.string()
 })
-export const onSubmit = async (prev:any, formData:FormData) => {
+interface FormState {
+    form: {
+        email: string;
+        password: string;
+    };
+    fieldErrors: {
+        email?: string[];
+        password?: string[];
+    };
+    success:boolean
+}
+export const onSubmit = async (prev:FormState, formData:FormData) => {
     const form = {
         email:formData.get("email") as string,
         password:formData.get("password") as string
@@ -53,10 +64,12 @@ export const onSubmit = async (prev:any, formData:FormData) => {
             redirect('/profile')
         }else{
             return {
-                fieldErrors:{
-                    password:['Wrong password'],
-                    email:[]
-                }
+                fieldErrors: {
+                    password: ['Wrong password'],
+                    email: [],
+                },
+                form,
+                success: false,
             }
         }
     }

@@ -51,12 +51,27 @@ const formSchema = z.object({
     message:"Both passwords should be the same",
     path:["password_confirm"]
 })
-export const createAccount = async (prev:any, formData:FormData) => {
+interface FormState {
+    form: {
+        email: string;
+        username: string;
+        password: string;
+        password_confirm: string;
+    };
+    fieldErrors: {
+        email?: string[];
+        username?: string[];
+        password?: string[];
+        passwordConfirm?: string[];
+    };
+    success:boolean
+}
+export const createAccount = async (prev:FormState, formData:FormData) => {
     const form = {
         email:formData.get("email") as string,
         username:formData.get("username") as string,
         password:formData.get("password") as string,
-        password_confirm:formData.get("password_confirm") as String
+        password_confirm:formData.get("password_confirm") as string
     }
     const result = await formSchema.spa(form)
 

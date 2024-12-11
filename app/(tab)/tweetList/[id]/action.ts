@@ -17,7 +17,10 @@ export const likePost = async (tweetId:number) => {
             }
         })
         revalidateTag(`like-status-${tweetId}`)
-    }catch(e){}
+    }catch(e){
+        console.error('Error fetching profile:', e);
+        return { error: 'Failed to update profile' };
+    }
 }
 
 export const dislikePost = async(tweetId:number) => {
@@ -33,20 +36,39 @@ export const dislikePost = async(tweetId:number) => {
             }
         })
         revalidateTag(`like-status-${tweetId}`)
-    }catch(e){}
+    }catch(e){
+        console.error('Error fetching profile:', e);
+        return { error: 'Failed to update profile' };
+    }
 }
 
 const commentSchema = z.object({
     textareaComment:z.string().min(5,'5글자 이상 작성하셔야 합니다')
 })
 
-export async function createComment(prev:any,formData:FormData) {
+interface FormState {
+    id:number,
+    fieldErrors: {
+        textareaComment?: string[];
+    };
+}
+
+export async function createComment(prev:FormState,formData:FormData) {
     const form = {
-        textareaComment:formData.get('textareaComment')
+        textareaComment:formData.get('textareaComment') as string
+    }
+    if (!form.textareaComment) {
+        return {
+            ...prev,
+            fieldErrors: {
+                textareaComment: ['Comment is required.']
+            }
+        };
     }
     const result = await commentSchema.spa(form)
     if(!result.success){
         return {
+            ...prev,
             fieldErrors:result.error.flatten().fieldErrors
         }
     }else{
@@ -57,7 +79,7 @@ export async function createComment(prev:any,formData:FormData) {
         if (!prev.id) {
             throw new Error('Tweet ID가 유효하지 않습니다.');
         }
-        const comment = await db.comment.create({
+        await db.comment.create({
             data:{
                 payload:result.data.textareaComment,
                 user:{

@@ -1,3 +1,4 @@
+import { ALLOWED_IMAGE_EXTENSIONS } from "@/lib/constans";
 import { formatToTimeAgo } from "@/lib/utills";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,6 +11,7 @@ interface ListTweetProps{
 }
 
 export default function Tweet({title,id,created_at,photo}:ListTweetProps){
+    const fileExtension = photo.split('.').pop()?.toLowerCase()
     return(
         <>
             <div>
@@ -18,9 +20,11 @@ export default function Tweet({title,id,created_at,photo}:ListTweetProps){
                     <span>{title}</span>
                     <span>{formatToTimeAgo(created_at.toString())}</span>
                     </div>
+                    {ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension!) && (
                     <span className="size-20 relative">
                         <Image className="object-cover" src={`${photo}`} fill alt={`${title}`}></Image>
                     </span>
+                )}
                 </Link>
             </div>
         </>

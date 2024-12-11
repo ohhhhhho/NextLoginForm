@@ -13,8 +13,14 @@ const tweetSchema = z.object({
     description:z.string(),
 
 })
-
-export async function uploadTweet(pre:any,formData:FormData) {
+interface FormState {
+    fieldErrors: {
+        photo?: string[];
+        title?: string[];
+        description?: string[];
+    };
+}
+export async function uploadTweet(pre:FormState | undefined,formData:FormData) {
     const data = {
         photo:formData.get('photo'),
         title:formData.get('title'),

@@ -4,12 +4,12 @@ import Input from "@/components/input";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useActionState, useState } from "react";
 import { uploadTweet } from "./action";
+import { ALLOWED_IMAGE_EXTENSIONS, FILE_SIZE_MAX_LIMIT } from "@/lib/constans";
 
-const ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;  // 5MB
 
-export default function addTweet(){
-    const [state,action] = useActionState(uploadTweet,null)
+
+export default function AddTweet(){
+    const [state,action] = useActionState(uploadTweet,{fieldErrors:{}})
     const [preview,setPreview] = useState("")
     const onImageChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {files} = e.target
@@ -35,11 +35,12 @@ export default function addTweet(){
         setPreview(url)
     }
     return(
-        <div className="mb-24">
-        <form action={action} className="p-5 flex flex-col gap-5">
+        <div className="mt-16">
+        <form action={action} className="p-5 flex flex-row gap-5 justify-center">
+          <div>
           <label
             htmlFor="photo"
-            className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+            className="border-2 aspect-square flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover w-96 h-96"
             style={{
               backgroundImage:`url(${preview})`
             }}
@@ -59,6 +60,8 @@ export default function addTweet(){
             accept="image/*"
             className="hidden"
           />
+          </div>
+          <div className="flex flex-col gap-5">
           <Input name="title" required placeholder="제목" type="text" errors={state?.fieldErrors.title}/>
           <Input
             name="description"
@@ -67,6 +70,7 @@ export default function addTweet(){
             placeholder="자세한 설명"
           />
           <Button text="작성 완료" />
+          </div>
         </form>
       </div>
     )

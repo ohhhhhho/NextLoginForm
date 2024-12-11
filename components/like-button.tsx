@@ -11,7 +11,7 @@ interface Props{
 }
 
 export default function LikeButton({likeCount,isLike,tweetId}:Props){
-    const [state,reducerFn] = useOptimistic({isLike,likeCount},(prevState,payload)=>{
+    const [state,reducerFn] = useOptimistic({isLike,likeCount},(prevState)=>{
         return{
             isLike:!prevState.isLike,
             likeCount:prevState.isLike ? prevState.likeCount - 1 : prevState.likeCount + 1

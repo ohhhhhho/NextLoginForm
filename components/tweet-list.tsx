@@ -3,7 +3,7 @@ import { useState } from "react"
 import Tweet from "./tweet"
 import { getMoreTweet } from "@/app/(tab)/tweetList/action";
 
-interface TweetListProps {
+export interface TweetListProps {
     initialTweet:{ 
         title: string;
         id: number;

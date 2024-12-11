@@ -3,7 +3,7 @@ import { createComment } from "@/app/(tab)/tweetList/[id]/action";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { useActionState } from "react";
 
-export default function Comment({id}){
+export default function Comment({id}:{id:number}){
     const [state,dispatch] = useActionState(createComment,{ fieldErrors: {},id })
     return(
         <>

@@ -1,6 +1,6 @@
 import Comment from "@/components/comment"
-import DeleteComment from "@/components/comments"
 import LikeButton from "@/components/like-button"
+import { ALLOWED_IMAGE_EXTENSIONS } from "@/lib/constans"
 import db from "@/lib/db"
 import getSession from "@/lib/session"
 import { formatToTimeAgo } from "@/lib/utills"
@@ -29,18 +29,18 @@ const getTweet = async (id:number) => {
             comments:{
                 select:{
                     id:true,
-                   payload:true,
-                   userId:true,
-                   user:{
-                    select:{
-                        username:true,
+                    payload:true,
+                    userId:true,
+                    user:{
+                        select:{
+                            username:true,
+                        }
                     }
-                   }
                 }
             }
         }
     })
-    console.log('tweet',tweet)
+    console.log('tweetDetail',tweet)
     return tweet
 }
 
@@ -73,13 +73,15 @@ async function getCachedLikeStatus(tweetId:number) {
     return cachedOperation(tweetId,userId!)
 }
 
-export default async function TweetDetail({params}:{params:{id:string}}){
+export default async function TweetDetail({params}:{params:Promise<{id:string}>}){
     const session = await getSession()
-    const id = Number(params.id)
-    if(isNaN(id)){
+    const {id} = await params
+    const numericId = Number(id);
+
+    if(isNaN(numericId)){
         return notFound()
     }
-    const tweet = await getTweet(id)
+    const tweet = await getTweet(numericId)
     if(!tweet){
         return notFound()
     }
@@ -88,7 +90,7 @@ export default async function TweetDetail({params}:{params:{id:string}}){
         "use server"
         await db.tweet.delete({
             where:{
-                id
+                id:numericId
             }
         })
         redirect("/tweetList")
@@ -102,10 +104,11 @@ export default async function TweetDetail({params}:{params:{id:string}}){
             }
         })
     }
-    const {likeCount,isLike} = await getCachedLikeStatus(id)
+    const fileExtension = tweet.photo.split('.').pop()?.toLowerCase()
+    const {likeCount,isLike} = await getCachedLikeStatus(numericId)
     return(
         <>
-            <div className="p-4 m-6 bg-white rounded-xl h-[calc(100vh-120px)] *:text-black">
+            <div className="p-4 m-6 bg-white rounded-xl *:text-black mb-24">
                 <div className="flex flex-row justify-between">
                 <span>작성자 : {tweet.user.username}</span>
                 <span>{formatToTimeAgo(tweet.updated_at.toString())}</span>
@@ -118,11 +121,13 @@ export default async function TweetDetail({params}:{params:{id:string}}){
                     </form>
                 ) : null}
                 <span className="mt-4 block">제목 : {tweet.title}</span>
-                <div className="relative w-full h-96">
+                {ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension!) && (
+                    <div className="relative w-96 max-h-96 h-96">
                     <Image fill className="object-cover" src={tweet.photo} alt={tweet.title}/>
                 </div>
+                )}
                 <span className="mb-2 block">{tweet.description}</span>
-                <LikeButton likeCount={likeCount} isLike={isLike} tweetId={id}/>
+                <LikeButton likeCount={likeCount} isLike={isLike} tweetId={numericId}/>
                 <hr className="my-2"/>
                 <ul className="flex flex-col gap-2">
                 {tweet.comments.map(i => (
@@ -138,7 +143,7 @@ export default async function TweetDetail({params}:{params:{id:string}}){
                 </li>
                 ))}
                 </ul>
-                <Comment id={id}/>
+                <Comment id={numericId}/>
             </div>
         </>
     )
