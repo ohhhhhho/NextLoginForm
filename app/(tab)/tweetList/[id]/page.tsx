@@ -1,11 +1,9 @@
 import Comment from "@/components/comment"
 import LikeButton from "@/components/like-button"
-import { ALLOWED_IMAGE_EXTENSIONS } from "@/lib/constans"
 import db from "@/lib/db"
 import getSession from "@/lib/session"
 import { formatToTimeAgo } from "@/lib/utills"
 import { unstable_cache } from "next/cache"
-import Image from "next/image"
 import { notFound, redirect } from "next/navigation"
 
 const getUser = async (userId:number) => {

@@ -1,6 +1,4 @@
-import { ALLOWED_IMAGE_EXTENSIONS } from "@/lib/constans";
 import { formatToTimeAgo } from "@/lib/utills";
-import Image from "next/image";
 import Link from "next/link";
 
 interface ListTweetProps{
