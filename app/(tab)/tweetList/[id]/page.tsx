@@ -104,7 +104,6 @@ export default async function TweetDetail({params}:{params:Promise<{id:string}>}
             }
         })
     }
-    const fileExtension = tweet.photo.split('.').pop()?.toLowerCase()
     const {likeCount,isLike} = await getCachedLikeStatus(numericId)
     return(
         <>
@@ -121,11 +120,6 @@ export default async function TweetDetail({params}:{params:Promise<{id:string}>}
                     </form>
                 ) : null}
                 <span className="mt-4 block">제목 : {tweet.title}</span>
-                {ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension!) && (
-                    <div className="relative w-96 max-h-96 h-96">
-                    <Image fill className="object-cover" src={tweet.photo} alt={tweet.title}/>
-                </div>
-                )}
                 <span className="mb-2 block">{tweet.description}</span>
                 <LikeButton likeCount={likeCount} isLike={isLike} tweetId={numericId}/>
                 <hr className="my-2"/>

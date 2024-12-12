@@ -10,7 +10,6 @@ const getTweet = async() => {
             title:true,
             created_at:true,
             likes:true,
-            photo:true
         },
         take:1,
         orderBy:{

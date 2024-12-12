@@ -29,7 +29,6 @@ model User {
 model Tweet {
   id          Int       @id @default(autoincrement())
   title       String    @default("")
-  photo       String    @default("")
   description String    @default("")
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt

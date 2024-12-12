@@ -21,7 +21,6 @@ export const getTweetKeyword = async (keyword:string) => {
             title: true,
             id: true,
             created_at: true,
-            photo:true
         }
     })
     return tweet

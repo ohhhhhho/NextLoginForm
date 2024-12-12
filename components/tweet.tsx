@@ -7,11 +7,9 @@ interface ListTweetProps{
     title: string;
     id: number;
     created_at: Date;
-    photo:string
 }
 
-export default function Tweet({title,id,created_at,photo}:ListTweetProps){
-    const fileExtension = photo.split('.').pop()?.toLowerCase()
+export default function Tweet({title,id,created_at}:ListTweetProps){
     return(
         <>
             <div>
@@ -20,11 +18,6 @@ export default function Tweet({title,id,created_at,photo}:ListTweetProps){
                     <span>{title}</span>
                     <span>{formatToTimeAgo(created_at.toString())}</span>
                     </div>
-                    {ALLOWED_IMAGE_EXTENSIONS.includes(fileExtension!) && (
-                    <span className="size-20 relative">
-                        <Image className="object-cover" src={`${photo}`} fill alt={`${title}`}></Image>
-                    </span>
-                )}
                 </Link>
             </div>
         </>
