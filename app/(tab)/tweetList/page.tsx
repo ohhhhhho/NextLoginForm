@@ -18,7 +18,6 @@ const getTweet = async() => {
                 created_at: 'desc'
             },
         });        
-        console.log('Fetched tweets:', tweet);
         return tweet;
     } catch (error) {
         console.error('Error fetching tweets:', error);
